@@ -1,3 +1,5 @@
+import { ADDRGETNETWORKPARAMS } from 'dns';
+import moment from 'moment';
 import ExchangeRate from './models/ExchangeRate';
 import {
   ExchangeInfo,
@@ -9,9 +11,9 @@ export const resolvers = {
   Query: {
     async getExchangeRate(
       _,
-      { src, tgt }: { src: string; tgt: string }
+      params: { src: string; tgt: string }
     ): Promise<ExchangeInfo | null> {
-      return await ExchangeRate.findOne({ src, tgt });
+      return await ExchangeRate.findOne(params);
     },
   },
 
@@ -20,10 +22,14 @@ export const resolvers = {
       _,
       { info }: { info: InputUpdateExchangeInfo }
     ): Promise<ExchangeInfo | null> {
-      const { src, tgt } = info;
+      const { src, tgt, date } = info;
       const isSameCurrency = src === tgt;
 
       isSameCurrency ? Object.assign(info, { rate: 1 }) : info;
+
+      date
+        ? info
+        : Object.assign(info, { date: moment().format('YYYY-MM-DD') });
 
       return await ExchangeRate.findOneAndUpdate({ src, tgt }, info, {
         upsert: true,
@@ -33,10 +39,9 @@ export const resolvers = {
 
     async deleteExchangeRate(
       _,
-      info: InputDeleteExchangeInfo
+      { info }: { info: InputDeleteExchangeInfo }
     ): Promise<ExchangeInfo | null> {
-      const { src, tgt, date } = info;
-      return await ExchangeRate.findOneAndDelete({ src, tgt, date });
+      return await ExchangeRate.findOneAndDelete(info);
     },
   },
 };
