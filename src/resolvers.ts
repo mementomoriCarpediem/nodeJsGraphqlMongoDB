@@ -1,4 +1,3 @@
-import { resourceLimits } from 'worker_threads';
 import ExchangeRate from './models/ExchangeRate';
 import {
   ExchangeInfo,
@@ -15,17 +14,23 @@ export const resolvers = {
       return await ExchangeRate.findOne({ src, tgt });
     },
   },
+
   Mutation: {
     async postExchangeRate(
       _,
       { info }: { info: InputUpdateExchangeInfo }
     ): Promise<ExchangeInfo | null> {
       const { src, tgt } = info;
+      const isSameCurrency = src === tgt;
+
+      isSameCurrency ? Object.assign(info, { rate: 1 }) : info;
 
       return await ExchangeRate.findOneAndUpdate({ src, tgt }, info, {
         upsert: true,
+        new: true,
       });
     },
+
     async deleteExchangeRate(
       _,
       info: InputDeleteExchangeInfo
