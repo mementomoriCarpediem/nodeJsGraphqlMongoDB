@@ -1,11 +1,10 @@
-import { ADDRGETNETWORKPARAMS } from 'dns';
 import moment from 'moment';
-import ExchangeRate from './models/ExchangeRate';
+import ExchangeRate from '../models/ExchangeRate';
 import {
   ExchangeInfo,
   InputDeleteExchangeInfo,
   InputUpdateExchangeInfo,
-} from './type';
+} from '../type';
 
 export const resolvers = {
   Query: {
@@ -13,6 +12,9 @@ export const resolvers = {
       _,
       params: { src: string; tgt: string }
     ): Promise<ExchangeInfo | null> {
+      if (!params.src || !params.tgt)
+        throw new Error('src와 tgt는 필수 값입니다.');
+
       return await ExchangeRate.findOne(params);
     },
   },
@@ -22,6 +24,8 @@ export const resolvers = {
       _,
       { info }: { info: InputUpdateExchangeInfo }
     ): Promise<ExchangeInfo | null> {
+      if (!info.src || !info.tgt) throw new Error('src와 tgt는 필수 값입니다.');
+
       const { src, tgt, date } = info;
       const isSameCurrency = src === tgt;
 
@@ -41,6 +45,9 @@ export const resolvers = {
       _,
       { info }: { info: InputDeleteExchangeInfo }
     ): Promise<ExchangeInfo | null> {
+      if (!info.src || !info.tgt || !info.date)
+        throw new Error('src, tgt, date는 필수 값입니다.');
+
       return await ExchangeRate.findOneAndDelete(info);
     },
   },
