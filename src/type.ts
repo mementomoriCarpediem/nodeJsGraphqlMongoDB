@@ -2,7 +2,7 @@ export interface InputUpdateExchangeInfo {
   src: string;
   tgt: string;
   rate: number;
-  date: String;
+  date?: String;
 }
 
 export interface InputDeleteExchangeInfo {

@@ -14,12 +14,9 @@ const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}
 mongoose.Promise = global.Promise;
 mongoose.set('strictQuery', false);
 mongoose.connect(uri);
-// .then((res) => console.log(res.connection));
 
 app.use(`/graphql`, graphqlHTTP({ schema, graphiql: true }));
 
-// console.log(0, schema.getQueryType()?.astNode?.fields);
-
 app.listen(port, () => {
-  console.log(`서버 실행!! 포트는? ${port}`);
+  console.log(`서버 실행! 포트번호: ${port}`);
 });
