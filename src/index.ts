@@ -4,7 +4,7 @@ import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import mongoose from 'mongoose';
 
-import schema from '../graphql/schema/index';
+import schema from './graphql/schema/index';
 
 const app = express();
 const port = process.env.PORT;
@@ -18,11 +18,7 @@ mongoose.connect(uri);
 
 app.use(`/graphql`, graphqlHTTP({ schema, graphiql: true }));
 
-app.get('/', (req, res) => {
-  res.json({
-    msg: '안녕',
-  });
-});
+// console.log(0, schema.getQueryType()?.astNode?.fields);
 
 app.listen(port, () => {
   console.log(`서버 실행!! 포트는? ${port}`);
