@@ -29,7 +29,7 @@ const typeDefs = `
     date: String!
   }
 
-  type ExchangeInfo @key(selectionSet:"{src, tgt, date}") {
+  type ExchangeInfo @key(selectionSet:"{src, tgt}") {
     src: String!
     tgt: String!
     rate: Float!
