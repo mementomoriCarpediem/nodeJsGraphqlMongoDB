@@ -1,8 +1,8 @@
 {
-  "name": "nodejs_graphql_mongodb_assignment",
+  "name": "nodejs_graphql_mongodb",
   "version": "1.0.0",
   "main": "src/index.ts",
-  "repository": "https://github.com/mementomoriCarpediem/nodeJsGraphqlMongoDBAssignment.git",
+  "repository": "https://github.com/mementomoriCarpediem/nodeJsGraphqlMongoDB.git",
   "author": "PJH <carpediem.mementomori.1984@gmail.com>",
   "license": "MIT",
   "scripts": {
