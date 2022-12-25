@@ -8,7 +8,9 @@
     "noImplicitAny": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es2018", "esnext.asynciterable"]
+    "lib": ["es2018", "esnext.asynciterable"],
+    "baseUrl": ".",
+    "paths": { "src/*": ["./src/*"] }
   },
   "exclude": ["node_modules"]
 }

@@ -17,3 +17,7 @@ export interface ExchangeInfo {
   rate: number;
   date: string;
 }
+
+export enum ErorMessage {
+  REQUIRED_PARAM_MISSING = 'REQUIRED_PARAM_MISSING',
+}

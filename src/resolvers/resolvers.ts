@@ -1,10 +1,11 @@
 import moment from 'moment';
-import ExchangeRate from '../models/ExchangeRate';
+import ExchangeRate from 'src/models/ExchangeRate';
 import {
+  ErorMessage,
   ExchangeInfo,
   InputDeleteExchangeInfo,
   InputUpdateExchangeInfo,
-} from '../type';
+} from 'src/type';
 
 export const resolvers = {
   Query: {
@@ -13,7 +14,7 @@ export const resolvers = {
       params: { src: string; tgt: string }
     ): Promise<ExchangeInfo | null> {
       if (!params.src || !params.tgt)
-        throw new Error('src와 tgt는 필수 값입니다.');
+        throw new Error(ErorMessage.REQUIRED_PARAM_MISSING);
 
       return await ExchangeRate.findOne(params);
     },
@@ -24,7 +25,8 @@ export const resolvers = {
       _,
       { info }: { info: InputUpdateExchangeInfo }
     ): Promise<ExchangeInfo | null> {
-      if (!info.src || !info.tgt) throw new Error('src와 tgt는 필수 값입니다.');
+      if (!info.src || !info.tgt)
+        throw new Error(ErorMessage.REQUIRED_PARAM_MISSING);
 
       const { src, tgt, date } = info;
       const isSameCurrency = src === tgt;
@@ -46,7 +48,7 @@ export const resolvers = {
       { info }: { info: InputDeleteExchangeInfo }
     ): Promise<ExchangeInfo | null> {
       if (!info.src || !info.tgt || !info.date)
-        throw new Error('src, tgt, date는 필수 값입니다.');
+        throw new Error(ErorMessage.REQUIRED_PARAM_MISSING);
 
       return await ExchangeRate.findOneAndDelete(info);
     },
